@@ -10,7 +10,6 @@
       rel="stylesheet"
     />
     <style>
-      /* Global Styles */
       body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background-color: #ffffff;
@@ -20,7 +19,7 @@
       }
       /* Navbar */
       .navbar {
-        background-color: #003366; /* Dark navy */
+        background-color: #003366;
       }
       .navbar-brand,
       .nav-link {
@@ -71,7 +70,6 @@
         padding: 2rem 0;
         background-color: #f8f9fa;
       }
-      /* Footer */
       footer {
         background-color: #003366;
         color: #ffffff;
@@ -81,18 +79,10 @@
     </style>
   </head>
   <body>
-    <!-- Navbar with Logo -->
+    <!-- Navbar without Logo and Metrics -->
     <nav class="navbar navbar-expand-lg">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-          <!-- Replace /static/logo.png with your logo's actual path -->
-          <img
-            src="/static/logo.png"
-            alt="VeriNews Logo"
-            style="height: 40px; margin-right: 10px"
-          />
-          VeriNews
-        </a>
+        <a class="navbar-brand" href="/">VeriNews</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -220,11 +210,10 @@
         <h2 class="text-center mb-4">About VeriNews</h2>
         <p class="text-center">
           At VeriNews, our mission is to empower readers with dependable news
-          verification. Using state-of-the-art machine learning, we continuously
-          update our system through user feedback to ensure that you receive
-          accurate, unbiased information. Our commitment to transparency and
-          continuous improvement means you can trust VeriNews as your first stop
-          in distinguishing legitimate news from misinformation.
+          verification. Using state-of-the-art machine learning algorithms and
+          continuous user feedback, our system delivers accurate and unbiased
+          news validation. Trust VeriNews to help you distinguish reliable
+          information from misinformation.
         </p>
       </div>
     </section>
@@ -238,7 +227,7 @@
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- JavaScript to scroll to the result block when a prediction appears -->
+    <!-- JavaScript to scroll to the result block when prediction appears -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const resultElement = document.getElementById("result");
