@@ -1,24 +1,8 @@
-# Data manipulation and analysis
-numpy
+flask
+gunicorn
+joblib
 pandas
-
-# Machine learning and preprocessing
 scikit-learn
 nltk
-
-# Visualization
-matplotlib
 seaborn
-
-# For lightweight transformer-based models and deep learning
-tensorflow
-keras
-transformers
-
-# For building a web application
-flask
-# Alternatively, if you prefer a simpler UI:
-# streamlit
-
-# For dataset download
-kagglehub
+matplotlib
