@@ -2,87 +2,250 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Fake News Detector</title>
+    <title>VeriNews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap 5 CSS -->
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
     />
     <style>
+      /* Global Styles */
       body {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background-color: #f0f2f5;
-        padding: 20px;
+        background-color: #ffffff;
+        color: #333;
+        margin: 0;
+        padding: 0;
       }
-      .container {
-        max-width: 800px;
-        margin: auto;
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* Navbar */
+      .navbar {
+        background-color: #003366; /* Dark navy */
       }
-      h1 {
+      .navbar-brand,
+      .nav-link {
+        color: #ffffff !important;
+      }
+      .nav-link:hover {
+        color: #cce0ff !important;
+      }
+      /* Hero Section */
+      .hero {
+        padding: 3rem 0;
         text-align: center;
+        background-color: #f8f9fa;
       }
-      textarea {
-        width: 100%;
-        height: 150px;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      input[type="submit"],
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-      .result {
-        margin-top: 20px;
-        font-size: 20px;
+      .hero h1 {
+        font-size: 2.75rem;
         font-weight: bold;
+        margin-bottom: 1rem;
+        color: #003366;
       }
-      .feedback {
-        margin-top: 20px;
+      .hero p {
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+        color: #333;
+      }
+      /* Prediction Section */
+      .prediction-section {
+        padding: 2rem 0;
+      }
+      .prediction-card {
+        padding: 2rem;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        background-color: #ffffff;
+      }
+      /* Button styling */
+      .btn-primary {
+        background-color: #003366;
+        border-color: #003366;
+      }
+      .btn-primary:hover {
+        background-color: #002244;
+        border-color: #002244;
+      }
+      /* About Section */
+      .about-section {
+        padding: 2rem 0;
+        background-color: #f8f9fa;
+      }
+      /* Footer */
+      footer {
+        background-color: #003366;
+        color: #ffffff;
+        padding: 1rem 0;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Fake News Detector</h1>
-      <form method="post" action="/">
-        <textarea
-          name="news_text"
-          placeholder="Enter the news text here..."
-          required
-        ></textarea>
-        <br />
-        <input type="submit" value="Predict" />
-      </form>
-      {% if prediction %}
-      <div class="result">Prediction: {{ prediction }}</div>
-      <div class="feedback">
-        <p>Was this prediction accurate?</p>
-        <form method="post" action="/feedback">
-          <input
-            type="hidden"
-            name="news_text"
-            value="{{ request.form.news_text }}"
+    <!-- Navbar with Logo -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <!-- Replace /static/logo.png with your logo's actual path -->
+          <img
+            src="/static/logo.png"
+            alt="VeriNews Logo"
+            style="height: 40px; margin-right: 10px"
           />
-          <input type="hidden" name="prediction" value="{{ prediction }}" />
-          <button type="submit" name="feedback" value="yes">Yes</button>
-          <button type="submit" name="feedback" value="no">No</button>
-        </form>
+          VeriNews
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" style="filter: invert(1)"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      {% endif %} {% if message %}
-      <div class="result">{{ message }}</div>
-      {% endif %}
-    </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>Accurate News Verification</h1>
+        <p>
+          VeriNews leverages advanced machine learning to provide fast and
+          reliable news validation.
+        </p>
+        <a href="#predict" class="btn btn-primary btn-lg">Get Started</a>
+      </div>
+    </section>
+
+    <!-- Prediction Form Section -->
+    <section id="predict" class="prediction-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="prediction-card">
+              <h3 class="text-center mb-4">Enter News Text</h3>
+              <form method="post" action="/">
+                <div class="mb-3">
+                  <textarea
+                    name="news_text"
+                    class="form-control"
+                    rows="6"
+                    placeholder="Paste the news text here..."
+                    required
+                  ></textarea>
+                </div>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary btn-lg">
+                    Predict
+                  </button>
+                </div>
+              </form>
+              <!-- Prediction and Feedback Section -->
+              {% if prediction %}
+              <div id="result" class="alert alert-info mt-4 text-center">
+                <h4>Prediction</h4>
+                <p>{{ prediction }}</p>
+              </div>
+              <div class="text-center mt-3">
+                <p>Was this prediction accurate?</p>
+                <div class="d-flex justify-content-center">
+                  <form method="post" action="/feedback" class="me-2">
+                    <input
+                      type="hidden"
+                      name="news_text"
+                      value="{{ request.form.news_text }}"
+                    />
+                    <input
+                      type="hidden"
+                      name="prediction"
+                      value="{{ prediction }}"
+                    />
+                    <button
+                      type="submit"
+                      name="feedback"
+                      value="yes"
+                      class="btn btn-success"
+                    >
+                      Yes
+                    </button>
+                  </form>
+                  <form method="post" action="/feedback">
+                    <input
+                      type="hidden"
+                      name="news_text"
+                      value="{{ request.form.news_text }}"
+                    />
+                    <input
+                      type="hidden"
+                      name="prediction"
+                      value="{{ prediction }}"
+                    />
+                    <button
+                      type="submit"
+                      name="feedback"
+                      value="no"
+                      class="btn btn-danger"
+                    >
+                      No
+                    </button>
+                  </form>
+                </div>
+              </div>
+              {% endif %} {% if message %}
+              <div class="alert alert-secondary mt-4 text-center">
+                {{ message }}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <h2 class="text-center mb-4">About VeriNews</h2>
+        <p class="text-center">
+          At VeriNews, our mission is to empower readers with dependable news
+          verification. Using state-of-the-art machine learning, we continuously
+          update our system through user feedback to ensure that you receive
+          accurate, unbiased information. Our commitment to transparency and
+          continuous improvement means you can trust VeriNews as your first stop
+          in distinguishing legitimate news from misinformation.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p class="mb-0">© 2025 VeriNews. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript to scroll to the result block when a prediction appears -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const resultElement = document.getElementById("result");
+        if (resultElement) {
+          resultElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
+    </script>
   </body>
 </html>
