@@ -1,32 +1,72 @@
-# VeriNews: News Verification and Misinformation Detection
+# VeriNews: News Verification and Misinformation Detection System
 
-## Overview
+VeriNews is an end-to-end web application that leverages advanced machine learning techniques to verify the authenticity of news content. The system implements A/B testing by utilizing both a production model and an experimental candidate model. User feedback is collected to continuously update and improve the system’s performance.
 
-VeriNews is an end-to-end news verification system leveraging advanced machine learning techniques. The project includes:
+---
 
-- Data preprocessing and model training
-- A Flask web application with a feedback loop
-- Evaluation metrics visualization (confusion matrix, precision, recall, F1 score)
-- Automated retraining and CI/CD pipelines
+## 📌 Table of Contents
 
-## Features
+- [Features](#features)
+- [Architecture](#architecture)
+- [Technologies Used](#technologies-used)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Project Flow](#project-flow)
+- [Contributing](#contributing)
+- [License](#license)
 
-- **Real-Time Prediction:** Submit news text and get immediate verification results.
-- **Evaluation Metrics:** View evaluation metrics via an interactive metrics dashboard.
-- **Continuous Learning:** User feedback is incorporated to retrain and improve model performance.
-- **Professional UI:** Clean, simple, and trustworthy design.
+---
 
-## How It Works
+## 🚀 Features
 
-1. **Preprocessing:** Raw news datasets are cleaned and transformed into training data.
-2. **Training:** A classifier is trained to distinguish between real and fake news.
-3. **Prediction:** Users submit news text via the web app.
-4. **Feedback:** Users provide feedback on predictions, which drives continuous improvement.
-5. **Evaluation:** Key metrics and a confusion matrix are available on the `/metrics` page.
+- ✅ **Accurate News Verification**  
+  Uses machine learning models (production and candidate) to classify news as _Real_ or _Fake_.
 
-## Running Locally
+- 🧪 **A/B Testing**  
+  Randomly routes requests to either the stable production model or a candidate model (based on a configurable probability) to compare results in real time.
 
-1. Clone the repository:
+- 💬 **User Feedback Loop**  
+  Captures user feedback (Yes/No) for each prediction to help in future model improvements.
+
+- 🎨 **Clean and Responsive UI**  
+  Built using Flask and Bootstrap for a sleek, modern look.
+
+- 📜 **Robust Logging**  
+  Detailed logs for both predictions and feedback for easy tracking and analysis.
+
+---
+
+## 🏗️ Architecture
+
+VeriNews is composed of the following components:
+
+- **Data Preprocessing**  
+  `clean_text()` (from `src/train_with_tuning`) is used to clean and standardize input text.
+
+- **Model Prediction**  
+  Supports both a production and a candidate model. An A/B testing ratio decides which model is used for a prediction.
+
+- **Feedback Capture**  
+  User feedback is stored in `feedback.log` and can later be used for retraining or fine-tuning.
+
+- **Deployment-Ready**  
+  The app is structured for easy deployment using platforms like Render, Railway, or Docker.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Language:** Python
+- **Framework:** Flask
+- **Machine Learning:** scikit-learn, joblib
+- **Frontend:** HTML, CSS, Bootstrap 5
+- **Version Control:** Git & GitHub
+
+---
+
+## ⚙️ Setup and Installation
+
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/yourusername/VeriNews.git
    cd VeriNews
