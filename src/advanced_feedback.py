@@ -1,28 +1,9 @@
-#!/usr/bin/env python
-# src/advanced_feedback.py
 import os
 import pandas as pd
 
 FEEDBACK_FILE = "feedback.log"
 
 def load_weighted_feedback(threshold=2):
-    """
-    Loads weighted feedback from feedback.log.
-    
-    Expected format (tab-delimited):
-      news_text <TAB> prediction <TAB> feedback [<TAB> weight]
-      
-    - "feedback" should be either "yes" or "no".  
-    - If an optional weight is provided, it is used; otherwise, defaults to 1.
-    
-    Aggregates feedback by summing weights for "yes" and "no". If the total
-    feedback (sum of weights) for a news item is at least the threshold, the final
-    label is decided by majority (weighted vote). If "no" votes outweigh "yes" votes,
-    the label is flipped compared to the original prediction.
-    
-    Returns a DataFrame with columns: 'combined_text', 'label', 'total_weight',
-    'yes_weight', and 'no_weight'.
-    """
     if not os.path.exists(FEEDBACK_FILE):
         return pd.DataFrame()
 
@@ -38,7 +19,6 @@ def load_weighted_feedback(threshold=2):
             news_text = parts[0].strip()
             prediction = parts[1].strip()
             feedback_val = parts[2].strip().lower()
-            # Optional weight (if not present, default to 1.0)
             weight = 1.0
             if len(parts) >= 4:
                 try:

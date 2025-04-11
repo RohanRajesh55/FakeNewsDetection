@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# src/automate_model_updates.py
 import os
 import pandas as pd
 import joblib
@@ -8,23 +6,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
-# Set file paths
 TRAINING_DATA_PATH = os.path.join("data", "processed", "FakeAndRealNews_processed.csv")
-FEEDBACK_FILE = "feedback.log"  # New user feedback is logged here
+FEEDBACK_FILE = "feedback.log" 
 MODELS_DIR = "models"
 CANDIDATE_MODEL_PATH = os.path.join(MODELS_DIR, "candidate_model.pkl")
 CANDIDATE_VECTORIZER_PATH = os.path.join(MODELS_DIR, "candidate_tfidf_vectorizer.pkl")
 
 def load_feedback(threshold=2):
-    """
-    Load aggregated feedback from feedback.log.
-    Each line in feedback.log should be tab-delimited: 
-        news_text<TAB>prediction<TAB>feedback
-    For each news_text, aggregate feedback only if there are at least 'threshold' entries.
-    Uses majority vote: if majority says "yes," keep the predicted label;
-    if majority says "no," flip the label.
-    Returns a DataFrame with columns: 'combined_text' and 'label'.
-    """
     if not os.path.exists(FEEDBACK_FILE):
         return pd.DataFrame()
 
@@ -62,14 +50,9 @@ def load_feedback(threshold=2):
     return pd.DataFrame(aggregated_feedback)
 
 def load_training_data():
-    """Load the original processed training data."""
     return pd.read_csv(TRAINING_DATA_PATH)
 
 def retrain_model():
-    """
-    Retrain a candidate model using both original training data and aggregated feedback.
-    Saves the candidate model and TF-IDF vectorizer.
-    """
     df_train = load_training_data()
     df_feedback = load_feedback(threshold=2)
     
@@ -81,13 +64,9 @@ def retrain_model():
         print("No adequate feedback available. Retraining on existing data only.")
     
     df_combined = df_combined.sample(frac=1, random_state=42).reset_index(drop=True)
-    
-    # Feature Engineering using TF-IDF
     vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
     X = vectorizer.fit_transform(df_combined['combined_text'])
     y = df_combined['label']
-    
-    # Quick validation split
     X_train, X_val, y_train, y_val = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y)
     
@@ -97,8 +76,6 @@ def retrain_model():
     y_pred = model.predict(X_val)
     f1 = f1_score(y_val, y_pred, average='weighted')
     print("Candidate Model F1 Score on Validation set: {:.3f}".format(f1))
-    
-    # Save candidate model and its vectorizer
     os.makedirs(MODELS_DIR, exist_ok=True)
     joblib.dump(model, CANDIDATE_MODEL_PATH)
     joblib.dump(vectorizer, CANDIDATE_VECTORIZER_PATH)

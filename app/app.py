@@ -1,36 +1,25 @@
-# app/app.py
 import os
 import sys
 import logging
 import random
 from flask import Flask, request, render_template
 import joblib
-
-# Add the parent directory so modules under src/ can be imported
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
-# Import the refined clean_text() function
 from src.train_with_tuning import clean_text
 
-# Setup logging
 logging.basicConfig(
     filename='app.log',
     level=logging.INFO,
     format='%(asctime)s %(levelname)s: %(message)s'
 )
 logging.info("Starting Flask application with A/B testing.")
-
-# Set paths for production and candidate models and vectorizers
 PROD_MODEL_PATH = os.path.join("models", "classical_model.pkl")
 VECTORIZER_PATH = os.path.join("models", "tfidf_vectorizer.pkl")
 CANDIDATE_MODEL_PATH = os.path.join("models", "candidate_model.pkl")
 CANDIDATE_VECTORIZER_PATH = os.path.join("models", "candidate_tfidf_vectorizer.pkl")
 
-# Load production model and vectorizer (must exist)
 prod_model = joblib.load(PROD_MODEL_PATH)
 prod_vectorizer = joblib.load(VECTORIZER_PATH)
-
-# If candidate model files exist, load them; otherwise, use production for all requests.
 candidate_model = None
 candidate_vectorizer = None
 if os.path.exists(CANDIDATE_MODEL_PATH) and os.path.exists(CANDIDATE_VECTORIZER_PATH):
@@ -41,8 +30,6 @@ else:
     logging.info("Candidate model not found. Using production model for all requests.")
 
 app = Flask(__name__)
-
-# A/B testing ratio: probability to use candidate model (set to 30% here)
 AB_TEST_RATIO = 0.3
 
 @app.route("/", methods=["GET", "POST"])
@@ -73,7 +60,7 @@ def home():
 def feedback():
     user_input = request.form.get("news_text")
     prediction = request.form.get("prediction")
-    user_feedback = request.form.get("feedback")  # Expected "yes" or "no"
+    user_feedback = request.form.get("feedback")
     
     try:
         feedback_line = f"{user_input}\t{prediction}\t{user_feedback}\n"

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# dashboard.py
 import streamlit as st
 import pandas as pd
 import os
@@ -9,7 +7,6 @@ st.title("Fake News Detection Monitoring Dashboard")
 st.header("Feedback Overview")
 feedback_log = "feedback.log"
 if os.path.exists(feedback_log):
-    # If you decide to include an optional fourth column (weight), adjust the column names accordingly.
     df = pd.read_csv(feedback_log, sep="\t", header=None, names=["News_Text", "Prediction", "Feedback", "Optional_Weight"])
     st.write("Total feedback records:", len(df))
     st.write("Feedback breakdown:")
